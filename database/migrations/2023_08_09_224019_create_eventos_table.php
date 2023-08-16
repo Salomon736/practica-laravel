@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('ticket_numero');
             $table->string('descripcions');
+            $table->integer('puntuacion');
             $table->timestamps();
         });
     }
