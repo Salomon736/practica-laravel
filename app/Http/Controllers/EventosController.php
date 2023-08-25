@@ -35,4 +35,61 @@ return view('noticias2', ['noticias' => $noticias]);
            
         $eventos = $eventos->noticias()->save($noticias);
     }
+    public function getnoticias(){
+        $noticias = Noticias::all()->take(10);
+        return response()->json($noticias);
+    }
+    public function getPrimeros10Titulos(){
+        $titulos = Noticias::take(10)->pluck('titulo');
+        return response()->json($titulos);
+    }
+    public function insertarNoticiaPostman(Request $request){
+        $datos = $request->all();
+    
+        $noticia = new Noticias();
+        $noticia->eventos_id = $datos['eventos_id'];
+        $noticia->titulo = $datos['titulo'];
+        $noticia->contenido = $datos['contenido'];
+        $noticia->save();
+    
+        return response()->json(['message' => 'Noticia insertada con éxito']);
+    }
+    public function buscarNoticiaPorTitulo($titulo){
+    $noticia = Noticias::where('titulo', $titulo)->first();
+    
+    if ($noticia) {
+        return response()->json($noticia);
+    } else {
+        return response()->json(['message' => 'Noticia no encontrada'], 404);
+    }
+    
+}
+public function contarNoticiasPrimerEvento(){
+    $primerEvento = eventos::first(); 
+    
+    if ($primerEvento) {
+        $cantidadNoticias = $primerEvento->noticias->count();
+        return response()->json(['cantidad_noticias' => $cantidadNoticias]);
+    } else {
+        return response()->json(['message' => 'No hay eventos'], 404);
+    }
+}
+public function verificarNoticiaPorIdEvento($eventoId) {
+    $evento = eventos::find($eventoId);
+    
+    if ($evento) {
+        $noticia = $evento->noticias->first();
+        return response()->json($noticia);
+    } else {
+        return response()->json(['message' => 'Evento no encontrado'], 404);
+    }
+}
+
+
+
+
+    
+    
+    
+    
 }

@@ -10,6 +10,6 @@ class eventos extends Model
     use HasFactory;
     public function noticias()
     {
-        return $this->hasMany(Noticias::class);
+        return $this->hasMany(Noticias::class, 'eventos_id');
     }
 }
